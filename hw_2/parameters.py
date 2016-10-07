@@ -24,7 +24,7 @@ I_small = 0.5 * S_nu
 I_large = 2.0 * S_nu
 
 # Case list as a tuple with I0, tau0 (on line center), 
-# tau (off of line center)
-Cases = [(0, tau_XL, tau_XL), (0, tau_S, tau_S), (I_small, tau_S, tau_S), 
-        (I_large, tau_S, tau_S), (I_small, tau_L, tau_S), (I_large, tau_L, tau_S)]
+# and 0 for flat sigma or 1 for Gaussian
+Cases = [(0, tau_XL, 0), (0, tau_S, 1), (I_small, tau_S, 1), 
+        (I_large, tau_S, 1), (I_small, tau_L, 1), (I_large, tau_L, 1)]
 NumCases = len(Cases)
