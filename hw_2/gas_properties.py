@@ -22,7 +22,7 @@ def Gaussian_Sigma(freqbin,center,width,sigma_max):
     # Accepts the frequency bin, central bin, standard deviation
     # (width), and sigma at the center. Returns the cross section
     # for that bin.
-    sig = sigma_max * math.exp((freq_bin-center)**2 / (2*width**2))
+    sig = sigma_max * math.exp(-float(freqbin-center)**2 / float(2*width**2))
     return sig
 
 

@@ -5,7 +5,7 @@ Distance = 100 # Distance through medium in parsecs
 NumSteps = 1000000 # Number of steps to take to travel Distance
 FreqBins = 1001 # Number of bins for frequency
 Central_Freq = FreqBins/2 # Center bin for odd FreqBins
-Std_Dev = 400 # The standard deviation in number of bins
+Std_Dev = 100 # The standard deviation in number of bins
 
 # These are the tau values to output the cross section for in part 1.
 tau_check = [1e-3, 1.0, 1e3]
