@@ -1,3 +1,5 @@
+# This file generates an HDF5 file with the cross section, initial 
+# intensity, and source function for each test case
 import h5py
 import numpy as np
 from parameters import *
@@ -5,7 +7,6 @@ from gas_properties import Gaussian_Sigma,Calculate_Sigma
 
 f = h5py.File('InitialConditions.hdf5','w')
 
-#I_list = f.create_group('I0')
 
 
 source = np.ones([NumCases,FreqBins]) * S_nu

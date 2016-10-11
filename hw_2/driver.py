@@ -1,4 +1,6 @@
-#This will control the execution of everything once the IC's have been made.
+# This will control the execution of everything once the IC's have been made.
+# Answers the questions in the early parts of the homework and generates
+# the final intensity plots.
 from gas_properties import Calculate_Sigma, Column_Density, Gaussian_Sigma, New_I, Calculate_Tau
 from parameters import *
 from plotting_routines import Sigma_Plot, Intensity_Plot
@@ -18,7 +20,7 @@ for i in tau_check:
     for j in range(0,FreqBins):
         bin_sig = Gaussian_Sigma(j,Central_Freq,Std_Dev,sig)
         sig_list[j] = bin_sig
-    Sigma_Plot(nu_list, sig_list, 'Part3_'+str(sig)+'.png')
+    Sigma_Plot(nu_list, sig_list, 'Part3_'+str(sig))
 
 g = h5py.File('InitialConditions.hdf5','r')
 I_initial = np.array(g['I_0'])

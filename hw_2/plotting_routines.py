@@ -1,3 +1,4 @@
+# Contains plotting routines for cross section and intensity
 import matplotlib.pyplot as plt
 from parameters import *
 

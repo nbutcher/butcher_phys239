@@ -1,4 +1,4 @@
-#This file will answer the questions in part a and give low, medium, and high cross sections to generate_ic.py
+#This file contains functions to be called by generate_ic.py and driver.py
 import math
 from constants import pc
 
