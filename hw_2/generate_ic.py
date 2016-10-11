@@ -8,7 +8,7 @@ f = h5py.File('InitialConditions.hdf5','w')
 #I_list = f.create_group('I0')
 
 
-source = np.ones(FreqBins) * S_nu
+source = np.ones([NumCases,FreqBins]) * S_nu
 S_list = f.create_dataset('S', data=source)
 
 sigma = np.ones([NumCases,FreqBins])

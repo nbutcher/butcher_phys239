@@ -12,9 +12,10 @@ def Intensity_Plot(nu, I_full, I_0, S, filenames):
     for i in range(0,NumCases):
         plt.plot(nu,I_full[i],c='r',label='Final I')
         plt.plot(nu,I_0[i],c='black',label='Initial I')
-        plt.plot(nu,S,c='blue',label='S')
+        plt.plot(nu,S[i],c='blue',label='S')
         plt.xlabel('Frequency (arbitrary units)')
         plt.ylabel('Intensity (arbitrary units)')
+        plt.ylim((0,I_large+1))
         plt.legend()
         plt.savefig(filenames[i] + '.png')
         plt.clf()

@@ -26,11 +26,12 @@ I_transport = np.array(I_initial)
 sigma_store = np.array(g['sig'])
 S_store = np.array(g['S'])
 tau_store = Calculate_Tau(n,Distance,sigma_store)
-S_current = 0
-ds = float(Distance) / (NumSteps)
-while (S_current < Distance):
-    I_transport = New_I(I_transport, S_store, tau_store, Distance, ds)
+Position = 0
+ds = float(Distance) / float(NumSteps)
+d_tau =  tau_store / float(NumSteps)
+while (Position < Distance):
+    I_transport = New_I(I_transport, S_store, d_tau, Distance)#, ds)
     #print I_transport[2][10], I_initial[2][10],S_store[10]
-    S_current += ds
+    Position += ds
 
 Intensity_Plot(nu_list,I_transport,I_initial,S_store,filenames)

@@ -19,9 +19,9 @@ tau_L = 5
 tau_S = 0.5
 
 # S (source function) and I_0 for I_0>S and I_0<S 
-S_nu = 1.0
-I_small = 0.5 * S_nu
-I_large = 2.0 * S_nu
+S_nu = 3.0
+I_small = 1.0 #0.5 * S_nu
+I_large = 5.0 #2.0 * S_nu
 
 # Case list as a tuple with I0, tau0 (on line center), 
 # and 0 for flat sigma or 1 for Gaussian

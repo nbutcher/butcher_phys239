@@ -30,8 +30,8 @@ def Calculate_Tau(n,D,sigma):
     tau = col_den * sigma
     return tau
 
-def New_I(I,S,tau,D,ds):
-    d_tau = ds / D
+def New_I(I,S,d_tau,D):#,ds):
+    #d_tau = (ds / D) * tau
     I_new = I - d_tau * I + d_tau * S
     return I_new
 
