@@ -13,7 +13,7 @@ tau_check = [1e-3, 1.0, 1e3]
 #tau_check2 = 1.0
 #tau_check3 = 1e3
 
-# Values for tau < 1, tau > 1, and tau >> 1, test outputs for part 1
+# Values for tau < 1, tau > 1, and tau >> 1
 tau_XL = 1e3
 tau_L = 5
 tau_S = 0.5
@@ -28,3 +28,5 @@ I_large = 2.0 * S_nu
 Cases = [(0, tau_XL, 0), (0, tau_S, 1), (I_small, tau_S, 1), 
         (I_large, tau_S, 1), (I_small, tau_L, 1), (I_large, tau_L, 1)]
 NumCases = len(Cases)
+
+filenames = ['Intensity_A','Intensity_B','Intensity_C','Intensity_D','Intensity_E','Intensity_F']

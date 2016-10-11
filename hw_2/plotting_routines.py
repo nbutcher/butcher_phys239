@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from parameters import *
 
 def Sigma_Plot(nu, sigma, filename):
     plt.plot(nu,sigma)
@@ -6,3 +7,14 @@ def Sigma_Plot(nu, sigma, filename):
     plt.ylabel("Cross Section (arbitrary units)")
     plt.savefig(filename + ".png")
     plt.clf()
+
+def Intensity_Plot(nu, I_full, I_0, S, filenames):
+    for i in range(0,NumCases):
+        plt.plot(nu,I_full[i],c='r',label='Final I')
+        plt.plot(nu,I_0[i],c='black',label='Initial I')
+        plt.plot(nu,S,c='blue',label='S')
+        plt.xlabel('Frequency (arbitrary units)')
+        plt.ylabel('Intensity (arbitrary units)')
+        plt.legend()
+        plt.savefig(filenames[i] + '.png')
+        plt.clf()

@@ -25,4 +25,13 @@ def Gaussian_Sigma(freqbin,center,width,sigma_max):
     sig = sigma_max * math.exp(-float(freqbin-center)**2 / float(2*width**2))
     return sig
 
+def Calculate_Tau(n,D,sigma):
+    col_den = Column_Density(n,D)
+    tau = col_den * sigma
+    return tau
+
+def New_I(I,S,tau,D,ds):
+    d_tau = ds / D
+    I_new = I - d_tau * I + d_tau * S
+    return I_new
 
