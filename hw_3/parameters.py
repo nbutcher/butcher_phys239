@@ -2,9 +2,12 @@
 
 import numpy as np
 
+# With the atomic number Z of the ion unspecified the distances
+# will be scaled by a factor of sqrt(Z)
+
 blist = []
 for i in range(1,6):
-    blist.append(i*2) #units are in Bohr radius
+    blist.append(i*2) 
 
 vlist = []
 for i in range(1,6):
@@ -12,6 +15,7 @@ for i in range(1,6):
 
 IC = np.array([blist,vlist])
 
-xStart = 200 #starting x in Bohr radii
+xStart = -200 #starting x position
 MaxDistance = 1 #maximum distance charge can move in one timestep
+
 
