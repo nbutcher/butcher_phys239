@@ -2,12 +2,13 @@
 
 import numpy as np
 import numpy.linalg as lin
-from constants import Bohr
+from parameters import Bohr
 
 def MaxTimeStep(v,MaxDistance):
     """Calculates a maximum timestep based on a pre-defined maximum
     allowed distance per timestep and the velocity"""
-    t = MaxDistance / v
+    v_bohr = v / Bohr #v in bohr radii per second
+    t = MaxDistance / v_bohr
     return t
 
 def Initialize(bi,vi,IC,Xstart):
@@ -24,8 +25,6 @@ def Calculate_Force(particle):
     r_cgs = r * Bohr
     F = pow(r_cgs,-2)
     return F
-
-def Components(r):
     
 
 def UpdateVel(particle,MaxDistance,vdiff):
@@ -40,8 +39,14 @@ def UpdateVel(particle,MaxDistance,vdiff):
     dv = force * dt
     xpos = particle[0][0]
     ypos = particle[0][1]
-    dvx = xpos/r
-    dvy = ypos/r
+    dvx = dv * xpos/r
+    dvy = dv * ypos/r
     particle += np.array([[0,0],[dvx,dvy]])
+    return dt
 
-    
+def UpdatePos(particle,dt):
+    vx_bohr = particle[1][0] / Bohr
+    vy_bohr = particle[1][1] / Bohr
+    drx = vx_bohr * dt
+    dry = vy_bohr * dt
+    particle += np.array([drx,dry],[0,0])

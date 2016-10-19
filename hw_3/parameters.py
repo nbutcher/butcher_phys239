@@ -5,13 +5,15 @@ import numpy as np
 # With the atomic number Z of the ion unspecified the distances
 # will be scaled by a factor of sqrt(Z)
 
+Bohr = 5.3e-9 #Bohr radius in cm
+
 blist = []
 for i in range(1,6):
     blist.append(i*2) 
 
 vlist = []
 for i in range(1,6):
-    vlist.append(i * 0.5 * 1e7) #1e7 cm/s
+    vlist.append(i * 0.5 * 1e7) #1e7 cm/s / Bohr radius
 
 IC = np.array([blist,vlist])
 
