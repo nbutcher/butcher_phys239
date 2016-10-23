@@ -10,7 +10,7 @@ me = 9.11e-28 #mass of electron in g
 charge = 4.803e-10 #charge of electron cgs
 blist = []
 for i in range(1,6):
-    blist.append(i*2) 
+    blist.append(i*20) 
 
 vlist = []
 for i in range(1,6):
@@ -20,6 +20,6 @@ IC = np.array([blist,vlist])
 
 xStart = -200 #starting x position in Bohur radius / z
 MaxDistance = 1 #maximum distance charge can move in one timestep
-TotalDistance = 400 #distance to travel in units of Bohr radius / Z
+TotalDistance = 300 * Bohr #distance to travel in cm
 vdiff = 0.05
 dt = 0.01 * Bohr / 1e7 #

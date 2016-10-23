@@ -14,8 +14,7 @@ for i in range(0,len(IC[0])):
         aylist = []
         timelist = []
         t = 0
-        min_t = 100
-        final_t = FinalTime(cPart[1][0],cPart[0][0],TotalDistance)
+        final_t = FinalTime(cPart[1][0],TotalDistance)
         while (t < final_t):
             cPart,xaccel,yaccel = UpdateParticle(cPart,dt) #MaxDistance,vdiff)
             #cPart = UpdatePos(cPart,dt)
@@ -29,9 +28,9 @@ for i in range(0,len(IC[0])):
             t += dt
         print 'Final'
         print cPart[0], cPart[1]
-        MakePlot(timelist,xlist,ylist,'Position','temp')
-        MakePlot(timelist,vxlist,vylist,'Velocity','temp')
-        MakePlot(timelist,axlist,aylist,'Acceleration','temp')
+        MakePlot(timelist,xlist,ylist,'Position','Position'+str(i)+str(j))
+        MakePlot(timelist,vxlist,vylist,'Velocity','Velocity'+str(i)+str(j))
+        MakePlot(timelist,axlist,aylist,'Acceleration','Acceleration'+str(i)+str(j))
         break
     break
 
