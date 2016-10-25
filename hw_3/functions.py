@@ -2,8 +2,10 @@
 
 import numpy as np
 import numpy.linalg as lin
+import numpy.fft as ft
 import matplotlib.pyplot as plt
-from parameters import Bohr,me,charge
+import math
+from parameters import Bohr,me,charge,c
 
 def MaxTimeStep(v,MaxDistance):
     """Calculates a maximum timestep based on a pre-defined maximum
@@ -31,20 +33,19 @@ def Calculate_Force(q1,q2,r):
 def UpdateParticle(particle,dt): #MaxDistance,vdiff):
 #    v = lin.norm(particle[1])
     r = lin.norm(particle[0])
-#    tmax = MaxTimeStep(v,MaxDistance)
     force = Calculate_Force(charge,-charge,r)
+    #print force
     accel = force / me
     #dv = accel * dt
     xpos = particle[0][0]
     ypos = particle[0][1]
     xaccel = accel * xpos/r
     yaccel = accel * ypos/r
+    #print accel, xaccel,yaccel, xpos, ypos
     dvx = xaccel * dt
     dvy = yaccel * dt
     dx = dt * particle[1][0]
     dy = dt * particle[1][1]
-    #if (abs(xpos < 0.5)):
-    #    print 'accel: ', accel
     particle += np.array([[dx,dy],[dvx,dvy]])
     return particle,xaccel,yaccel
 
@@ -56,9 +57,51 @@ def FinalTime(vinit,distance):
 def MakePlot(time,x,y,val,name):
     plt.plot(time,x,label='x ' + val)
     plt.plot(time,y,label='y ' + val)
+    plt.xlabel('Time (s)')
+    plt.ylabel(val + ' (cgs units)')
     plt.legend()
     plt.savefig(name+'.png')
+    plt.clf()
 
-#def MainLoop():
+def DipolePlot(time,dipole,name):
+    plt.plot(time,dipole)
+    plt.xlabel('Time (s)')
+    plt.ylabel('Second derivative of dipole moment (statC cm s^-2)')
+    plt.savefig(name+'.png')
+    plt.clf()
 
-    
+def TrajectoryPlot(x,y,name):
+    xarray = np.array(x) 
+    yarray = np.array(y)
+    xarray /= Bohr
+    yarray /= Bohr
+    plt.plot(xarray,yarray)
+    plt.xlabel('x position (Bohr radii)')
+    plt.ylabel('y position (Bohr radii)')
+    plt.savefig(name+'.png')
+    plt.clf()
+
+
+def FT_Dipole(d,dt):
+    dipole_list = np.array(d)
+    dipole_w = ft.fft(dipole_list)
+    dipole_w = dipole_w.real
+    #time_array = np.array(time)
+    n = dipole_w.size
+    freq_array = ft.fftfreq(n,dt)
+    return freq_array,dipole_w
+
+def PowerSpectrum(wlist,dlist,name):
+    power = dlist * dlist * wlist * wlist * wlist * wlist * 2.0 / (3.0 * c**3)
+    pos_wlist = []
+    pos_power = []
+    for i in range(0,len(wlist)):
+        if (wlist[i] > 0):
+            pos_wlist.append(wlist[i])
+            pos_power.append(power[i])
+    print min(pos_power)
+    plt.plot(pos_wlist,pos_power)
+    plt.xlabel('Frequency (rad/s)')
+    plt.ylabel('Power (erg/s)')
+    plt.savefig(name + '.png')
+    plt.clf()

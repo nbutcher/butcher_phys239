@@ -8,18 +8,19 @@ import numpy as np
 Bohr = 5.3e-9 #Bohr radius in cm
 me = 9.11e-28 #mass of electron in g
 charge = 4.803e-10 #charge of electron cgs
+c = 29979245800 #speed of light in cm/s
 blist = []
 for i in range(1,6):
-    blist.append(i*20) 
+    blist.append(i*5000) 
 
 vlist = []
 for i in range(1,6):
-    vlist.append(i * 0.5 * 1e7) #1e7 cm/s
+    vlist.append(i * 1e7) #1e7 cm/s
 
 IC = np.array([blist,vlist])
 
-xStart = -200 #starting x position in Bohur radius / z
+xStart = -50000 #starting x position in Bohr radius / z
 MaxDistance = 1 #maximum distance charge can move in one timestep
-TotalDistance = 300 * Bohr #distance to travel in cm
+TotalDistance = 100000 * Bohr #distance to travel in cm
 vdiff = 0.05
-dt = 0.01 * Bohr / 1e7 #
+dt = 1.0 * Bohr / 1e7 #
