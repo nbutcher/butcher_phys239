@@ -21,4 +21,7 @@ is by default set as
 
 Plots of the trajectory, velocities, acceleration, and second time
 derivative of the dipole moment are provided for case 00. Plots of 
-the power spectrum are generated for all cases.
+the power spectrum are generated for all cases. The power spectrum
+does not have a clear peak and is decreasing as frequency increases.
+This might be an indication that I am not seeing the peak with my 
+timestepping choice.

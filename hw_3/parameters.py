@@ -11,7 +11,7 @@ charge = 4.803e-10 #charge of electron cgs
 c = 29979245800 #speed of light in cm/s
 blist = []
 for i in range(1,6):
-    blist.append(i*5000) #impact parameter in units of Bohr radius
+    blist.append(i*5e3) #impact parameter in units of Bohr radius
 
 vlist = []
 for i in range(1,6):
@@ -19,7 +19,6 @@ for i in range(1,6):
 
 IC = np.array([blist,vlist])
 
-xStart = -50000 #starting x position in Bohr radius / z
-MaxDistance = 1 #maximum distance charge can move in one timestep
-TotalDistance = 100000 * Bohr #distance to travel in cm
-dt = 1.0 * Bohr / 1e7 #defines the timestep
+xStart = -5e5 #starting x position in Bohr radius / z
+TotalDistance = 1e6 * Bohr #distance to travel in cm
+dt = 10.0 * Bohr / 1e7 #defines the timestep

@@ -101,7 +101,7 @@ def PowerSpectrum(wlist,dlist,name):
             pos_power.append(power[i])
     print max(pos_power)
     print pos_power[0],pos_power[1]
-    plt.semilogy(pos_wlist,pos_power)
+    plt.loglog(pos_wlist,pos_power)
     plt.xlabel('Frequency (rad/s)')
     plt.ylabel('Power (erg/s)')
     plt.savefig(name + '.png')
