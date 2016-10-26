@@ -25,7 +25,7 @@ while (t < final_t):
     vylist.append(cPart[1][1])
     axlist.append(xaccel)
     aylist.append(yaccel)
-    #Here we assume all acceleration is radial, should hold
+    #Here we use the fact that the acceleration is radial
     dipole_change = -charge * math.sqrt(xaccel**2 + yaccel**2)
     dipole_list.append(dipole_change)
     timelist.append(t)
@@ -45,8 +45,9 @@ for i in range(0,len(IC[0])):
         t = 0
         final_t = FinalTime(cPart[1][0],TotalDistance)
         while (t < final_t):
-            cPart,xaccel,yaccel = UpdateParticle(cPart,dt) #MaxDistance,vdiff)
-            dipole_change = math.sqrt(xaccel**2 + yaccel**2)
+            cPart,xaccel,yaccel = UpdateParticle(cPart,dt)
+            #Here we use the fact that the acceleration is radial
+            dipole_change = -charge * math.sqrt(xaccel**2 + yaccel**2)
             dipole_list.append(dipole_change)
             timelist.append(t)
             t += dt

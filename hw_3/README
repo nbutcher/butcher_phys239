@@ -1,0 +1,24 @@
+To get the plots for the assignment, run the file called "driver.py"
+and it will generate plots. All plots will have a name indicating 
+the physical property plotted and two numbers indicating what index
+in the IC file provided the impact parameter and initial velocity.
+
+The first digit gives the index in the impact parameter list, which
+is by default set as
+0 : 5000 Bohr radii
+1 : 10000 Bohr radii
+2 : 15000 Bohr radii
+3 : 20000 Bohr radii
+4 : 25000 Bohr radii
+
+The second digit gives the index of the initial velocity list, which
+is by default set as
+0 : 1e7 cm/s
+1 : 2e7 cm/s
+2 : 3e7 cm/s
+3 : 4e7 cm/s
+4 : 5e7 cm/s
+
+Plots of the trajectory, velocities, acceleration, and second time
+derivative of the dipole moment are provided for case 00. Plots of 
+the power spectrum are generated for all cases.
