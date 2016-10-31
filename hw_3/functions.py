@@ -80,28 +80,31 @@ def TrajectoryPlot(x,y,name):
     plt.clf()
 
 
-def FT_Dipole(d,dt):
+def FT_Dipole(d_ddot,dt):
     """Perform a Fourier Transform to get the change in dipole 
     moment as a function of frequency"""
-    dipole_list = np.array(d)
-    dipole_w = ft.fft(dipole_list)
-    dipole_w = dipole_w.real
-    n = dipole_w.size
-    freq_array = ft.fftfreq(n,dt)
-    return freq_array,dipole_w
+
+    dipole_ddot_list = np.array(d_ddot)
+    n = dipole_ddot_list.size
+    freq_array = ft.rfftfreq(n,dt)
+    dipole_ddot_w = ft.rfft(dipole_ddot_list)
+    dipole_ddot_w = np.sqrt(dipole_ddot_w * np.conj(dipole_ddot_w))
+    return freq_array,dipole_ddot_w
+
 
 def PowerSpectrum(wlist,dlist,name):
-    """Plot the power spectrum"""
-    power = dlist * dlist * 2.0 / (3.0 * c**3)
+    """Plot the power spectrum as a function of frequency"""
+    power = dlist * 2.0 / (3.0 * c**3)
     pos_wlist = []
     pos_power = []
-    for i in range(0,len(wlist)):
-        if (wlist[i] > 0):
-            pos_wlist.append(wlist[i])
-            pos_power.append(power[i])
-    print max(pos_power)
-    print pos_power[0],pos_power[1]
-    plt.loglog(pos_wlist,pos_power)
+    #for i in range(0,len(wlist)):
+    #    if (wlist[i] > 0):
+    #        pos_wlist.append(wlist[i])
+    #        pos_power.append(power[i])
+    #    else:
+    #        pos_wlist.append(-wlist[i])
+    #        pos_power.append(power[i])
+    plt.loglog(wlist,power)
     plt.xlabel('Frequency (rad/s)')
     plt.ylabel('Power (erg/s)')
     plt.savefig(name + '.png')
