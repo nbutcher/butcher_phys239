@@ -21,4 +21,4 @@ IC = np.array([blist,vlist])
 
 xStart = -5e5 #starting x position in Bohr radius / z
 TotalDistance = 1e6 * Bohr #distance to travel in cm
-dt = 1e3 * Bohr / 1e7 #defines the timestep
+dt = 1e1 * Bohr / 1e7 #defines the timestep

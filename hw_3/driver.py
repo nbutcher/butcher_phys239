@@ -56,7 +56,7 @@ for i in range(0,len(IC[0])):
             cPart,xaccel,yaccel = UpdateParticle(cPart,dt)
             #Here we use the fact that the acceleration is radial
             cos_theta = DotProdAngle(np.array([xaccel,yaccel]), np.array([cPart[0][0],cPart[0][1]]))
-            dipole_change2 = cos_theta**2 + charge**2 * (xaccel**2 + yaccel**2)
+            dipole_change2 = cos_theta**2 * charge**2 * (xaccel**2 + yaccel**2)
             dipole_list.append(dipole_change2)
             timelist.append(t)
             t += dt
