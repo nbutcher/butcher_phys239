@@ -79,6 +79,10 @@ def TrajectoryPlot(x,y,name):
     plt.savefig(name+'.png')
     plt.clf()
 
+def DotProdAngle(a,b):
+    val = a[0] * b[0] + a[1] * b[1]
+    cos_theta = val / (lin.norm(a) * lin.norm(b))
+    return cos_theta
 
 def FT_Dipole(d_ddot,dt):
     """Perform a Fourier Transform to get the change in dipole 

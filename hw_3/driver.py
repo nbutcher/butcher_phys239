@@ -29,8 +29,9 @@ while (t < final_t):
     axlist.append(xaccel)
     aylist.append(yaccel)
     #Here we use the fact that the acceleration is radial
-    dipole_ddot = -charge * math.sqrt(xaccel**2 + yaccel**2)
-    dipole_ddot2 = charge**2 * (xaccel**2 + yaccel**2)
+    cos_theta = DotProdAngle(np.array([xaccel,yaccel]), np.array([cPart[0][0],cPart[0][1]]))
+    dipole_ddot = cos_theta * charge * math.sqrt(xaccel**2 + yaccel**2)
+    dipole_ddot2 = dipole_ddot**2
     dipole_ddot_list.append(dipole_ddot)
     dipole_ddot2_list.append(dipole_ddot2)
 #    dipole_list.append(charge * math.sqrt(cPart[0][0]**2 + cPart[0][1]**2))
@@ -44,7 +45,6 @@ DipolePlot(timelist,dipole_ddot_list,'Dipole_Change00')
 wlist, dipole_w = FT_Dipole(dipole_ddot2_list,dt)
 PowerSpectrum(wlist,dipole_w,'PowerSpectrum00')
 
-
 for i in range(0,len(IC[0])):
     for j in range(0,len(IC[1])):
         cPart = Initialize(i,j,IC,xStart)
@@ -55,7 +55,8 @@ for i in range(0,len(IC[0])):
         while (t < final_t):
             cPart,xaccel,yaccel = UpdateParticle(cPart,dt)
             #Here we use the fact that the acceleration is radial
-            dipole_change2 = charge**2 * (xaccel**2 + yaccel**2)
+            cos_theta = DotProdAngle(np.array([xaccel,yaccel]), np.array([cPart[0][0],cPart[0][1]]))
+            dipole_change2 = cos_theta**2 + charge**2 * (xaccel**2 + yaccel**2)
             dipole_list.append(dipole_change2)
             timelist.append(t)
             t += dt
