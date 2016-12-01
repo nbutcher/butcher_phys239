@@ -108,7 +108,7 @@ def PowerSpectrum(wlist,dlist,name):
     #    else:
     #        pos_wlist.append(-wlist[i])
     #        pos_power.append(power[i])
-    plt.loglog(wlist,power)
+    plt.scatter(np.log(wlist),np.log(power))
     plt.xlabel('Frequency (rad/s)')
     plt.ylabel('Power (erg/s)')
     plt.savefig(name + '.png')
