@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from scipy.special import gamma
 from parameters import *
@@ -29,4 +30,8 @@ def SynchrotronSpectrum(const,p,wlist):
         slist.append(val)
 
     return slist
+
+def FreeFree(T,wl,ne,ni,Z,gff):
+    freq = microns_to_hz(wl)
+    val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
 
