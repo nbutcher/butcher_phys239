@@ -32,6 +32,22 @@ def SynchrotronSpectrum(const,p,wlist):
     return slist
 
 def FreeFree(T,wl,ne,ni,Z,gff):
+    ''' Returns free-free emission per volume per time per hertz'''
     freq = microns_to_hz(wl)
     val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
+
+def Planck_Law(wl, T):
+    f1 = 2.*h*c**2 / wl**5
+    f2 = 1. / (math.exp(h*c / (wl * kB * T)) - 1)
+    return f1 * f2
+
+def Get_Kappa(Q, a, rho):
+    return 3. * Q / (4. * a * rho)
+
+def Dust_Emission(M,D,kappa,T,wl):
+    B = Planck_Law(wl, T)
+    return M * kappa * B / D**2
+
+def Dust_Spectrum(M,D,kappa,T,Q,a,rho,wlist):
+    for wl in wlist:
 
