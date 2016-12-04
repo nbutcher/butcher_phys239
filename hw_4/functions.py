@@ -35,19 +35,54 @@ def FreeFree(T,wl,ne,ni,Z,gff):
     ''' Returns free-free emission per volume per time per hertz'''
     freq = microns_to_hz(wl)
     val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
+    return val
+
+def FreeFreeSpectrum(T,ne,ni,Z,gff,wlist):
+    flist = []
+    for wl in wlist:
+        val = FreeFree(T,wl,ne,ni,Z,gff)
+        flist.append(val)
+    return flist
 
 def Planck_Law(wl, T):
     f1 = 2.*h*c**2 / wl**5
     f2 = 1. / (math.exp(h*c / (wl * kB * T)) - 1)
     return f1 * f2
 
-def Get_Kappa(Q, a, rho):
-    return 3. * Q / (4. * a * rho)
+def Read_Dust_Table(wl, wlist, qlist):
+    for i in range(0,wlist.shape[0]):
+        if (wlist[i] < wl):
+            diff = wlist[i-1] - wlist[i]
+            split = wl - wlist[i]
+            frac = split / diff
+            Qdiff = qlist[i-1] - qlist[i]
+            Qval = qlist[i] + frac * Qdiff
+            return Qval
 
-def Dust_Emission(M,D,kappa,T,wl):
+def Dust_File(infile,index):
+    f = h5py.File(infile,'r')
+    if (index < 10):
+        indexstr = 'Grain0' + str(index)
+    else:
+        indexstr = 'Grain' + str(index)
+    grain = f[indexstr]
+    wlist = np.array(grain['Wavelength'])
+    size = np.array(grain['Size'])
+    qlist = np.array(grain['Q'])
+    return wlist, size, qlist
+
+def Get_Kappa(a, wl, wlist, qlist):
+    Q = Read_Dust_Table(wl, wlist, qlist)
+    return 3. * Q / (4. * a)
+
+def Dust_Emission(V,D,kappa,T,wl):
     B = Planck_Law(wl, T)
-    return M * kappa * B / D**2
+    return V * kappa * B / D**2
 
-def Dust_Spectrum(M,D,kappa,T,Q,a,rho,wlist):
+def Dust_Spectrum(V,D,kappa,T,a,wlist,wlist_q,qlist):
+    dustlist = []
     for wl in wlist:
-
+        k = Get_Kappa(a, wl, wlist_q, qlist)
+        val = Dust_Emission(V,D,k,T,wl)
+        dustlist.append(val)
+    return dustlist
