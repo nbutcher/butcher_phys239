@@ -38,4 +38,4 @@ def dat_to_hdf5(infile, outfile):
     f.close()
     hf.close()
 
-#dat_to_hdf5('m82spec.dat','SpecData.hdf5')
+dat_to_hdf5('m82spec.dat','SpecData.hdf5')
