@@ -31,16 +31,18 @@ def Synchrotron_Spectrum(const,p,wlist):
 
     return slist
 
-def FreeFree(T,wl,ne,ni,Z,gff):
+def FreeFree(wl, factor, T): #(T,wl,ne,ni,Z,gff):
     ''' Returns free-free emission per volume per time per hertz'''
     freq = microns_to_hz(wl)
-    val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
+    print freq, h * freq / (kB * T), math.exp(-h * freq / (kB * T))
+    #val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
+    val = factor * T**(-0.5) * math.exp(-h * freq / (kB * T))
     return val
 
-def FreeFree_Spectrum(T,ne,ni,Z,gff,wlist):
+def FreeFree_Spectrum(wlist, factor, T): #(T,ne,ni,Z,gff,wlist):
     flist = []
     for wl in wlist:
-        val = FreeFree(T,wl,ne,ni,Z,gff)
+        val = FreeFree(wl, factor, T) #(T,wl,ne,ni,Z,gff)
         flist.append(val)
     return flist
 

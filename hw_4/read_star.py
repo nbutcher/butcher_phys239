@@ -5,9 +5,9 @@ from parameters import c, L_sun
 wavelist = []
 llist = []
 
-offset = 511
+offset = 575
 end_off = offset + 10
-f = open('fig7b.txt')
+f = open('fig3a.txt')
 count = 0
 for line in f:
     if (count <= 2):
@@ -26,7 +26,7 @@ for line in f:
         else:
             lumstr += line[i]
 #    print lumstr
-    lum = float(lumstr)
+    lum = 10**float(lumstr)
     llist.append(lum)
 #    count += 1
 #    if (count > 20):
@@ -34,9 +34,9 @@ for line in f:
 
 
 f.close()
-A_in_Hz = c / 1e-10
-wavearr = np.array(wavelist)# * 1e-4
-lumarr = np.array(llist)#* L_sun / A_in_Hz
+A_in_Hz = c / 1e-8
+wavearr = np.array(wavelist) * 1e-4
+lumarr = np.array(llist) / L_sun #/ A_in_Hz
 
 outfile = h5py.File('temp_star','w') #'Z020_Single.hdf5','w')
 wl = outfile.create_dataset('Wavelength',data=wavearr)
