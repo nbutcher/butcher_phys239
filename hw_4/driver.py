@@ -4,12 +4,18 @@ from functions import *
 
 f = h5py.File('SpecData.hdf5','r')
 
-wave = f['Wavelength']
-lum = f['Luminosity']
+wave = np.array(f['Wavelength'])
+lum = np.array(f['Luminosity'])
+
+
+stars = h5py.File('Z020_Single.hdf5')
+starwave = np.array(stars['Wavelength'])
+starlum = np.array(stars['Luminosity'])
+slumlist = Stellar_Spectrum(wave,starwave,starlum)
+BasicSpecPlot(wave,slumlist)
 
 sconst = 2e8 #This reproduces 3e3 to long end of plot
 p = 2 #should always be > 0
-slist = SynchrotronSpectrum(sconst,p,wave)
+slist = Synchrotron_Spectrum(sconst,p,wave)
 #BasicSpecPlot(wave,slist)
-
-#flist = FreeFreeSpectrum(T,ne,ni,Z,gff,wlist):
+#flist = FreeFree_Spectrum(T,ne,ni,Z,gff,wlist):

@@ -22,7 +22,7 @@ def SynchrotronMain(const,p,wl):
     f2 = ((me * c * 2 * np.pi * freq) / (3 * qe * const))**(-(p-1)/2)
     return f1 * g1 * g2 * f2
 
-def SynchrotronSpectrum(const,p,wlist):
+def Synchrotron_Spectrum(const,p,wlist):
     
     slist = []
     for wl in wlist:
@@ -37,7 +37,7 @@ def FreeFree(T,wl,ne,ni,Z,gff):
     val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
     return val
 
-def FreeFreeSpectrum(T,ne,ni,Z,gff,wlist):
+def FreeFree_Spectrum(T,ne,ni,Z,gff,wlist):
     flist = []
     for wl in wlist:
         val = FreeFree(T,wl,ne,ni,Z,gff)
@@ -49,15 +49,28 @@ def Planck_Law(wl, T):
     f2 = 1. / (math.exp(h*c / (wl * kB * T)) - 1)
     return f1 * f2
 
-def Read_Dust_Table(wl, wlist, qlist):
-    for i in range(0,wlist.shape[0]):
-        if (wlist[i] < wl):
-            diff = wlist[i-1] - wlist[i]
-            split = wl - wlist[i]
-            frac = split / diff
-            Qdiff = qlist[i-1] - qlist[i]
-            Qval = qlist[i] + frac * Qdiff
-            return Qval
+def Read_Table(wl, wlist, qlist, order):
+    '''order == 1 has wavelenght descending, order == 0 has wavelength
+    ascending in the list'''
+    if (order == 1):
+        for i in range(0,wlist.shape[0]):
+            if (wlist[i] < wl):
+                diff = wlist[i-1] - wlist[i]
+                split = wl - wlist[i]
+                frac = split / diff
+                Qdiff = qlist[i-1] - qlist[i]
+                Qval = qlist[i] + frac * Qdiff
+                return Qval
+    else:
+        for i in range(0,wlist.shape[0]):
+            if (wlist[i] > wl):
+                diff = wlist[i] - wlist[i-1]
+                split = wl - wlist[i-1]
+                frac = split / diff
+                Qdiff = qlist[i] - qlist[i-1]
+                Qval = qlist[i-1] + frac * Qdiff
+                return Qval
+
 
 def Dust_File(infile,index):
     f = h5py.File(infile,'r')
@@ -72,7 +85,7 @@ def Dust_File(infile,index):
     return wlist, size, qlist
 
 def Get_Kappa(a, wl, wlist, qlist):
-    Q = Read_Dust_Table(wl, wlist, qlist)
+    Q = Read_Table(wl, wlist, qlist, 1)
     return 3. * Q / (4. * a)
 
 def Dust_Emission(V,D,kappa,T,wl):
@@ -86,3 +99,14 @@ def Dust_Spectrum(V,D,kappa,T,a,wlist,wlist_q,qlist):
         val = Dust_Emission(V,D,k,T,wl)
         dustlist.append(val)
     return dustlist
+
+def Stellar_Luminosity(wl, wltable, lumlist):
+    lum = Read_Table(wl, wltable, lumlist, 0)
+    return lum
+
+def Stellar_Spectrum(wllist, wltable, lumlist):
+    vallist = []
+    for wl in wllist:
+        lum = Stellar_Luminosity(wl,wltable,lumlist)
+        vallist.append(lum)
+    return vallist
