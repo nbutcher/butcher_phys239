@@ -13,7 +13,7 @@ def BasicSpecPlot(wl,lum):
 
 def microns_to_hz(wl):
     wl_in_cm = wl * 1e-4 #convert from microns to cm
-    return c / wl
+    return c / wl_in_cm
 
 def SynchrotronMain(const,p,wl):
     f1 = (np.sqrt(3.) * qe**3 * const) / (2. * np.pi * me * c**2 * (p + 1.))
@@ -48,12 +48,19 @@ def FreeFree_Spectrum(wlist, factor, T): #(T,ne,ni,Z,gff,wlist):
     return flist
 
 def Planck_Law(wl, T):
-    f1 = 2.*h*c**2 / wl**5
-    f2 = 1. / (math.exp(h*c / (wl * kB * T)) - 1)
+    f = microns_to_hz(wl)
+    f1 = 2.*h*f**3 / c**2 
+    try:
+        f2 = 1. / math.expm1(h*f / (kB * T))
+    except OverflowError:
+        f2 = 0
+    #print math.exp(h*f / (kB * T)), math.expm1(h*f / (kB * T)), f
+    #print wl, h*f, kB * T
+    #print wl, f, h * f, kB * T
     return f1 * f2
 
 def Read_Table(wl, wlist, qlist, order):
-    '''order == 1 has wavelenght descending, order == 0 has wavelength
+    '''order == 1 has wavelength descending, order == 0 has wavelength
     ascending in the list'''
     if (order == 1):
         for i in range(0,wlist.shape[0]):
@@ -85,7 +92,7 @@ def Dust_File(infile,index):
     wlist = np.array(grain['Wavelength'])
     size = np.array(grain['Size'])
     qlist = np.array(grain['Q'])
-    return wlist, size, qlist
+    return wlist, size[0], qlist
 
 def Get_Kappa(a, wl, wlist, qlist):
     Q = Read_Table(wl, wlist, qlist, 1)
@@ -93,15 +100,28 @@ def Get_Kappa(a, wl, wlist, qlist):
 
 def Dust_Emission(V,D,kappa,T,wl):
     B = Planck_Law(wl, T)
+    #print B, kappa, wl
     return V * kappa * B / D**2
 
-def Dust_Spectrum(V,D,T,a,wlist,wlist_q,qlist):
+'''def Dust_Spectrum(V,D,T,a,wlist,wlist_q,qlist):
     dustlist = []
     for wl in wlist:
         k = Get_Kappa(a, wl, wlist_q, qlist)
         val = Dust_Emission(V,D,k,T,wl)
         dustlist.append(val)
+    return dustlist'''
+
+def Dust_Spectrum(V,D,T,a,wlist,qlist):
+    dustlist = []
+    for i in range(0,wlist.shape[0]):
+        Q = qlist[i]
+        kappa = 3. * Q / (4. * a)
+        wl = wlist[i]
+        val = Dust_Emission(V,D,kappa,T,wl)
+        #B = Planck_Law(wl,T)
+        dustlist.append(val)
     return dustlist
+
 
 def Stellar_Luminosity(wl, wltable, lumlist):
     lum = Read_Table(wl, wltable, lumlist, 0)
