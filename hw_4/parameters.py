@@ -13,5 +13,5 @@ h = 6.626e-27 #Planck constant
 #h = 4.136e-15 #Planck Constant
 
 Distance = 3.6 * 3.0857e24 #in cm
-Tdust = 2.5e1 #Dust temperature for thermal dust emission
+Tdust = 4.0e1 #Dust temperature for thermal dust emission
 Tgas = 1e4 #Gas temperature for free-free emission

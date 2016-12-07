@@ -9,18 +9,17 @@ wave = np.array(f['Wavelength'])
 lum = np.array(f['Luminosity'])
 #BasicSpecPlot(wave,lum)
 
-#stars = h5py.File('temp_star') #'Z020_Single.hdf5')
-#starwave = np.array(stars['Wavelength'])
-#starlum = np.array(stars['Luminosity'])
+stars = h5py.File('temp_star') #'Z020_Single.hdf5')
+starwave = np.array(stars['Wavelength'])
+starlum = np.array(stars['Luminosity'])
 #slumlist = Stellar_Spectrum(wave,starwave,starlum)
-#BasicSpecPlot(wave,slumlist)
+#BasicSpecPlot(starwave,starlum)
 
-'''
-dustfile = 'graphite.hdf5'
+dustfile = 'silicate.hdf5'
 #for i in range(0,81):
-index = 0
+index = 0 #Maybe 76 for silicon_carbide?
 dwave, size, qlist = Dust_File(dustfile,index)
-V = 1
+V = 3e61
 dlist = Dust_Spectrum(V,Distance,Tdust,size,dwave,qlist)
 maxd = max(dlist)
 darray = np.array(dlist)
@@ -30,15 +29,31 @@ dlist1 = []
 for j in contrib[0]:
     dwave1.append(dwave[j])
     dlist1.append(darray[j])
-BasicSpecPlot(dwave1,dlist1)
-'''
+#BasicSpecPlot(dwave1,dlist1)
 
-sconst = 2e8 #This reproduces 3e3 to long end of plot
+sconst = 2e10 #This reproduces 3e3 to long end of plot
 p = 2 #should always be > 0
 slist = Synchrotron_Spectrum(sconst,p,wave)
+sarray = np.array(slist)
+contrib = np.where( sarray > 1e-7 )
+swave1 = []
+slist1 = []
+for j in contrib[0]:
+    swave1.append(wave[j])
+    slist1.append(sarray[j])
 #BasicSpecPlot(wave,slist)
 
-factor = 1.0/3.0
+factor = 1.0/3.0 *1e-2
 flist = FreeFree_Spectrum(wave, factor, Tgas)
+farray = np.array(flist)
+contrib = np.where( wave < 1e2 )
+fwave1 = []
+flist1 = []
+for j in contrib[0]:
+    fwave1.append(wave[j])
+    flist1.append(farray[j])
+
 #print flist[0], flist[-1]
-BasicSpecPlot(wave,flist)
+#BasicSpecPlot(wave,flist)
+
+ThreeSpecPlot(dwave1,dlist1,'Dust',swave1,slist1,'Synch',fwave1,flist1,'Free-free')

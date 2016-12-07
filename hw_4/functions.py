@@ -11,6 +11,13 @@ def BasicSpecPlot(wl,lum):
     plt.ylabel('Luminosity (L_sun / Hz)')
     plt.show()
 
+def ThreeSpecPlot(w1,l1,label1,w2,l2,label2,w3,l3,label3):
+    plt.loglog(w1,l1,label=label1)
+    plt.loglog(w2,l2,label=label2)
+    plt.loglog(w3,l3,label=label3)
+    plt.legend()
+    plt.show()
+
 def microns_to_hz(wl):
     wl_in_cm = wl * 1e-4 #convert from microns to cm
     return c / wl_in_cm

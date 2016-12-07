@@ -7,7 +7,7 @@ llist = []
 
 offset = 575
 end_off = offset + 10
-f = open('fig3a.txt')
+f = open('fig3b.dat')
 count = 0
 for line in f:
     if (count <= 2):
