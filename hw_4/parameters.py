@@ -9,3 +9,5 @@ L_sun = 3.838e26 * 1e7 #solar luminosity
 #Physical Constants in eV
 kB = 8.617e-5 #Boltzmann constant
 h = 4.136e-15 #Planck Constant
+
+Distance = 3.6 * 3.0857e24 #in cm

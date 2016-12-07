@@ -1,3 +1,4 @@
+import h5py
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -34,7 +35,7 @@ def Synchrotron_Spectrum(const,p,wlist):
 def FreeFree(wl, factor, T): #(T,wl,ne,ni,Z,gff):
     ''' Returns free-free emission per volume per time per hertz'''
     freq = microns_to_hz(wl)
-    print freq, h * freq / (kB * T), math.exp(-h * freq / (kB * T))
+#    print freq, h * freq / (kB * T), math.exp(-h * freq / (kB * T))
     #val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
     val = factor * T**(-0.5) * math.exp(-h * freq / (kB * T))
     return val
@@ -94,7 +95,7 @@ def Dust_Emission(V,D,kappa,T,wl):
     B = Planck_Law(wl, T)
     return V * kappa * B / D**2
 
-def Dust_Spectrum(V,D,kappa,T,a,wlist,wlist_q,qlist):
+def Dust_Spectrum(V,D,T,a,wlist,wlist_q,qlist):
     dustlist = []
     for wl in wlist:
         k = Get_Kappa(a, wl, wlist_q, qlist)
