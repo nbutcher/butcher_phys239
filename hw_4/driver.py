@@ -9,11 +9,30 @@ wave = np.array(f['Wavelength'])
 lum = np.array(f['Luminosity'])
 #BasicSpecPlot(wave,lum)
 
-stars = h5py.File('temp_star') #'Z020_Single.hdf5')
+stars = h5py.File('Z040_Single_Salpeter_Nebular.hdf5') #'Z020_Single.hdf5')
 starwave = np.array(stars['Wavelength'])
 starlum = np.array(stars['Luminosity'])
 #slumlist = Stellar_Spectrum(wave,starwave,starlum)
-#BasicSpecPlot(starwave,starlum)
+print max(starlum), min(starlum)
+massfrac = 2e-1
+stararray = np.array(starlum) * massfrac
+starwave1 = []
+starlum1 = []
+contrib = np.where( starwave>2e-1 )
+for j in contrib[0]:
+    starwave1.append(starwave[j])
+    starlum1.append(stararray[j])
+
+starwave1arr = np.array(starwave1)
+starwave2 = []
+starlum2 = []
+contrib = np.where( starwave1arr<3e0 )
+for j in contrib[0]:
+    starwave2.append(starwave1[j])
+    starlum2.append(starlum1[j])
+
+
+BasicSpecPlot(starwave2,starlum2)
 
 dustfile = 'silicate.hdf5'
 #for i in range(0,81):
@@ -56,4 +75,4 @@ for j in contrib[0]:
 #print flist[0], flist[-1]
 #BasicSpecPlot(wave,flist)
 
-ThreeSpecPlot(dwave1,dlist1,'Dust',swave1,slist1,'Synch',fwave1,flist1,'Free-free')
+#ThreeSpecPlot(dwave1,dlist1,'Dust',swave1,slist1,'Synch',fwave1,flist1,'Free-free')
