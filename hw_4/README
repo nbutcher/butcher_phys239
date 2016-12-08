@@ -1,3 +1,6 @@
+The questions have been answered in the file "writeup.pdf" which also
+provides sources for assumptions about stellar model and gas temperature.
+
 The code to generate the final plot asked for in the assignment is provided in
 this repository. There are two files, "read_dust.py" and "read_star.py", which
 convert data files provided by sites linked to in the homework assignment to

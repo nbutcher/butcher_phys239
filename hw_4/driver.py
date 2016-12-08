@@ -12,7 +12,7 @@ wave = np.array(f['Wavelength'])
 lum = np.array(f['Luminosity'])
 #BasicSpecPlot(wave,lum)
 
-stars = h5py.File('Z040_Single_Salpeter_Nebular.hdf5') #'Z020_Single.hdf5')
+stars = h5py.File('Z040_Single_Salpeter_Nebular.hdf5') 
 starwave = np.array(stars['Wavelength'])
 starlum = np.array(stars['Luminosity'])
 massfrac = 2e-2
@@ -35,7 +35,6 @@ for j in contrib[0]:
 #BasicSpecPlot(starwave2,starlum2)
 
 dustfile = 'silicate.hdf5'
-#for i in range(0,81):
 index = 0 
 dwave, size, qlist = Dust_File(dustfile,index)
 V = 5e60
@@ -50,7 +49,7 @@ for j in contrib[0]:
     dlist1.append(darray[j])
 #BasicSpecPlot(dwave1,dlist1)
 
-sconst = 5e12 #2e10 #This reproduces 3e3 to long end of plot
+sconst = 5e12 
 p = 2.0 #should always be > 0
 slist = Synchrotron_Spectrum(sconst,p,wave)
 sarray = np.array(slist)
@@ -72,7 +71,6 @@ for j in contrib[0]:
     fwave1.append(wave[j])
     flist1.append(farray[j])
 
-#print flist[0], flist[-1]
 #BasicSpecPlot(wave,flist)
 
 OverlaySpecPlot(dwave1,dlist1,'Dust',swave1,slist1,'Synch',fwave1,flist1,'Free-free',starwave2,starlum2,'Starlight',wave,lum)
