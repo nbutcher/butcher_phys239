@@ -1,3 +1,6 @@
+#Functions used to generate the plots from the given datasets and
+#equations describing luminosity
+
 import h5py
 import numpy as np
 import math
@@ -6,23 +9,30 @@ from scipy.special import gamma
 from parameters import *
 
 def BasicSpecPlot(wl,lum):
+    '''Generates a plot of luminosity density vs. wavelength'''
     plt.loglog(wl,lum)
     plt.xlabel('Wavelength (microns)')
     plt.ylabel('Luminosity (L_sun / Hz)')
     plt.show()
 
-def ThreeSpecPlot(w1,l1,label1,w2,l2,label2,w3,l3,label3):
+def OverlaySpecPlot(w1,l1,label1,w2,l2,label2,w3,l3,label3,w4,l4,label4,givenwl,givenlum):
+    '''Plots all four components against the given spectrum'''
     plt.loglog(w1,l1,label=label1)
     plt.loglog(w2,l2,label=label2)
     plt.loglog(w3,l3,label=label3)
+    plt.loglog(w4,l4,label=label4)
+    plt.loglog(givenwl,givenlum,label='Given')
     plt.legend()
     plt.show()
 
+
 def microns_to_hz(wl):
+    '''Converts a wavelength to microns to frequency in hertz'''
     wl_in_cm = wl * 1e-4 #convert from microns to cm
     return c / wl_in_cm
 
 def SynchrotronMain(const,p,wl):
+    '''Calculates synchrotron emission for a single wavelength'''
     f1 = (np.sqrt(3.) * qe**3 * const) / (2. * np.pi * me * c**2 * (p + 1.))
     g1 = gamma(p/4. + 19./12.)
     g2 = gamma(p/4. - 1./12.)
@@ -31,7 +41,7 @@ def SynchrotronMain(const,p,wl):
     return f1 * g1 * g2 * f2
 
 def Synchrotron_Spectrum(const,p,wlist):
-    
+    '''Calculates synchrotron emission for a list of wavelengths'''
     slist = []
     for wl in wlist:
         val = SynchrotronMain(const,p,wl)
@@ -42,12 +52,11 @@ def Synchrotron_Spectrum(const,p,wlist):
 def FreeFree(wl, factor, T): #(T,wl,ne,ni,Z,gff):
     ''' Returns free-free emission per volume per time per hertz'''
     freq = microns_to_hz(wl)
-#    print freq, h * freq / (kB * T), math.exp(-h * freq / (kB * T))
-    #val = 6.8e-38 * Z**2 * ne * ni * T**(-0.5) * math.exp(-h * freq / (kB * T))
     val = factor * T**(-0.5) * math.exp(-h * freq / (kB * T))
     return val
 
 def FreeFree_Spectrum(wlist, factor, T): #(T,ne,ni,Z,gff,wlist):
+    '''Calculates free-free emission for a list of wavelengths'''
     flist = []
     for wl in wlist:
         val = FreeFree(wl, factor, T) #(T,wl,ne,ni,Z,gff)
@@ -55,20 +64,21 @@ def FreeFree_Spectrum(wlist, factor, T): #(T,ne,ni,Z,gff,wlist):
     return flist
 
 def Planck_Law(wl, T):
+    '''Calculates Planck's law for frequency'''
     f = microns_to_hz(wl)
     f1 = 2.*h*f**3 / c**2 
+    #The exponent below can overflow within the asked for spectral 
+    #range. When this happens the luminosity is negligible.
     try:
         f2 = 1. / math.expm1(h*f / (kB * T))
-    except OverflowError:
+    except OverflowError: 
         f2 = 0
-    #print math.exp(h*f / (kB * T)), math.expm1(h*f / (kB * T)), f
-    #print wl, h*f, kB * T
-    #print wl, f, h * f, kB * T
     return f1 * f2
 
 def Read_Table(wl, wlist, qlist, order):
     '''order == 1 has wavelength descending, order == 0 has wavelength
-    ascending in the list'''
+    ascending in the list. Currently not used but left in case it is 
+    needed again'''
     if (order == 1):
         for i in range(0,wlist.shape[0]):
             if (wlist[i] < wl):
@@ -90,6 +100,7 @@ def Read_Table(wl, wlist, qlist, order):
 
 
 def Dust_File(infile,index):
+    '''Opens a file containing dust data from provided Draine site'''
     f = h5py.File(infile,'r')
     if (index < 10):
         indexstr = 'Grain0' + str(index)
@@ -102,23 +113,19 @@ def Dust_File(infile,index):
     return wlist, size[0], qlist
 
 def Get_Kappa(a, wl, wlist, qlist):
+    '''Calculates absorption opacity from table, not used'''
     Q = Read_Table(wl, wlist, qlist, 1)
     return 3. * Q / (4. * a)
 
 def Dust_Emission(V,D,kappa,T,wl):
+    '''Dust emission at the input wavelength'''
     B = Planck_Law(wl, T)
-    #print B, kappa, wl
     return V * kappa * B / D**2
 
-'''def Dust_Spectrum(V,D,T,a,wlist,wlist_q,qlist):
-    dustlist = []
-    for wl in wlist:
-        k = Get_Kappa(a, wl, wlist_q, qlist)
-        val = Dust_Emission(V,D,k,T,wl)
-        dustlist.append(val)
-    return dustlist'''
 
 def Dust_Spectrum(V,D,T,a,wlist,qlist):
+    '''Calculates dust emission for all values from the Draine
+    dataset'''
     dustlist = []
     for i in range(0,wlist.shape[0]):
         Q = qlist[i]
@@ -131,10 +138,12 @@ def Dust_Spectrum(V,D,T,a,wlist,qlist):
 
 
 def Stellar_Luminosity(wl, wltable, lumlist):
+    '''Not used, reads stellar luminosity from table'''
     lum = Read_Table(wl, wltable, lumlist, 0)
     return lum
 
 def Stellar_Spectrum(wllist, wltable, lumlist):
+    '''Writes the stellar spectra from the Starburst99 dataset'''
     vallist = []
     for wl in wllist:
         lum = Stellar_Luminosity(wl,wltable,lumlist)

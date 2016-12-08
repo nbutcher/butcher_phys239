@@ -1,6 +1,8 @@
-Maybe single burst, 500 Myr, Z=0.020. NOPE, not enough of a rise at low wavelength
+The code to generate the final plot asked for in the assignment is provided in
+this repository. There are two files, "read_dust.py" and "read_star.py", which
+convert data files provided by sites linked to in the homework assignment to
+hdf5 files that are used to generate their portions of the spectrum. For ease,
+I have included the hdf5 files in the repository, so all that must be done to
+generate the plot is run
 
-Synchrotron Dominates from about 10^3 to the long end of the provided spectrum
-
-Tgas chosen as 10^4 with reference to Draine "Physics of the Interstellar and
-Intergalacitic Medium" textbook
+python driver.py

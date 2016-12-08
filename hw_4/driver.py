@@ -1,3 +1,6 @@
+#This file is run after the stellar and dust model hdf5 input files have
+#been created.
+
 import numpy as np
 import h5py 
 from functions import *
@@ -12,9 +15,7 @@ lum = np.array(f['Luminosity'])
 stars = h5py.File('Z040_Single_Salpeter_Nebular.hdf5') #'Z020_Single.hdf5')
 starwave = np.array(stars['Wavelength'])
 starlum = np.array(stars['Luminosity'])
-#slumlist = Stellar_Spectrum(wave,starwave,starlum)
-print max(starlum), min(starlum)
-massfrac = 2e-1
+massfrac = 2e-2
 stararray = np.array(starlum) * massfrac
 starwave1 = []
 starlum1 = []
@@ -31,14 +32,13 @@ for j in contrib[0]:
     starwave2.append(starwave1[j])
     starlum2.append(starlum1[j])
 
-
-BasicSpecPlot(starwave2,starlum2)
+#BasicSpecPlot(starwave2,starlum2)
 
 dustfile = 'silicate.hdf5'
 #for i in range(0,81):
-index = 0 #Maybe 76 for silicon_carbide?
+index = 0 
 dwave, size, qlist = Dust_File(dustfile,index)
-V = 3e61
+V = 5e60
 dlist = Dust_Spectrum(V,Distance,Tdust,size,dwave,qlist)
 maxd = max(dlist)
 darray = np.array(dlist)
@@ -50,8 +50,8 @@ for j in contrib[0]:
     dlist1.append(darray[j])
 #BasicSpecPlot(dwave1,dlist1)
 
-sconst = 2e10 #This reproduces 3e3 to long end of plot
-p = 2 #should always be > 0
+sconst = 5e12 #2e10 #This reproduces 3e3 to long end of plot
+p = 2.0 #should always be > 0
 slist = Synchrotron_Spectrum(sconst,p,wave)
 sarray = np.array(slist)
 contrib = np.where( sarray > 1e-7 )
@@ -62,7 +62,7 @@ for j in contrib[0]:
     slist1.append(sarray[j])
 #BasicSpecPlot(wave,slist)
 
-factor = 1.0/3.0 *1e-2
+factor = 1e-2
 flist = FreeFree_Spectrum(wave, factor, Tgas)
 farray = np.array(flist)
 contrib = np.where( wave < 1e2 )
@@ -75,4 +75,4 @@ for j in contrib[0]:
 #print flist[0], flist[-1]
 #BasicSpecPlot(wave,flist)
 
-#ThreeSpecPlot(dwave1,dlist1,'Dust',swave1,slist1,'Synch',fwave1,flist1,'Free-free')
+OverlaySpecPlot(dwave1,dlist1,'Dust',swave1,slist1,'Synch',fwave1,flist1,'Free-free',starwave2,starlum2,'Starlight',wave,lum)
